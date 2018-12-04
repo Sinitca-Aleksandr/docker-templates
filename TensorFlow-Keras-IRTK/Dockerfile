@@ -58,4 +58,4 @@ ENV PYTHONPATH "/home/tensorflow/models/research:/home/tensorflow/models/researc
 WORKDIR  /home
 RUN rm -r cocoapi
 
-CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/home/tensorflow/models/research/object_detection", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/home/", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
