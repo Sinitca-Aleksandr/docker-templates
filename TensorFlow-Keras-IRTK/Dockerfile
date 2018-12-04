@@ -3,12 +3,13 @@ RUN apt-get update && yes | apt-get upgrade
 RUN apt-get install -y \
     git \
     python-pip \
+RUN apt-get install -y \
     protobuf-compiler \
     python-pil \
     python-lxml \
     python-tk \
     libsm6 \
- && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --proxy http://10.128.0.100:8080 --upgrade pip
 RUN pip install --proxy http://10.128.0.100:8080 --user \
