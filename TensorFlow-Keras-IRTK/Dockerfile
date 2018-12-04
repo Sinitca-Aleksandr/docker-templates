@@ -31,7 +31,7 @@ RUN pip3 install --proxy http://10.128.0.100:8080 --user \
 RUN git config --global http.proxy http://10.128.0.100:8080
 
 # Install models/recearch
-WORKDIR  /usr/local/lib/python3.5/dist-packages/tensorflow/
+WORKDIR  /home/tensorflow/
 RUN git clone https://github.com/Sinitca-Aleksandr/models.git
 
 RUN ln -sf python3 /usr/bin/python
@@ -40,8 +40,8 @@ WORKDIR  /home
 RUN git clone https://github.com/cocodataset/cocoapi.git
 WORKDIR  /home/cocoapi/PythonAPI
 RUN make
-RUN cp -r pycocotools /usr/local/lib/python3.5/dist-packages/tensorflow/models/research/
-WORKDIR  /usr/local/lib/python3.5/dist-packages/tensorflow/models/research/
+RUN cp -r pycocotools /home/tensorflow/models/research/
+WORKDIR  /home/tensorflow/models/research/
 
 RUN apt-get update && apt-get install -y wget
 
@@ -54,8 +54,8 @@ RUN wget -O protobuf.zip https://github.com/google/protobuf/releases/download/v3
 RUN unzip protobuf.zip
 RUN ./bin/protoc object_detection/protos/*.proto --python_out=.
 
-ENV PYTHONPATH "/usr/local/lib/python3.5/dist-packages/tensorflow/models/research:/usr/local/lib/python3.5/dist-packages/tensorflow/models/research/slim"
+ENV PYTHONPATH "/home/tensorflow/models/research:/home/tensorflow/models/research/slim"
 WORKDIR  /home
 RUN rm -r cocoapi
 
-CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/tensorflow/models/research/object_detection", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/home/tensorflow/models/research/object_detection", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
