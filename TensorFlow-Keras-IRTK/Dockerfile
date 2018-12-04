@@ -43,12 +43,12 @@ RUN make
 RUN cp -r pycocotools /usr/local/lib/python3.5/dist-packages/tensorflow/models/research/
 WORKDIR  /usr/local/lib/python3.5/dist-packages/tensorflow/models/research/
 
-RUN apt-get install -y wget
+RUN apt-get update && apt-get install -y wget
 
-RUN echo "https_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc
-RUN echo "http_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc
-RUN echo "ftp_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc
-RUN echo "use_proxy = on" >> /etc/wgetrc
+RUN echo "https_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
+    && echo "http_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
+    && echo "ftp_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
+    && echo "use_proxy = on" >> /etc/wgetrc
 
 RUN wget -O protobuf.zip https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip
 RUN unzip protobuf.zip
