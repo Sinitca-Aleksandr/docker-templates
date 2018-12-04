@@ -2,7 +2,7 @@ FROM tensorflow/tensorflow:1.12.0-gpu-py3
 RUN apt-get update && yes | apt-get upgrade
 RUN apt-get install -y \
     git \
-    python-pip \
+    python-pip
 RUN apt-get install -y \
     protobuf-compiler \
     python-pil \
