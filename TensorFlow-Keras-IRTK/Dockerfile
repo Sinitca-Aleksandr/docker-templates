@@ -1,4 +1,16 @@
-FROM tensorflow/tensorflow:1.12.0-gpu-py3
+FROM tensorflow/tensorflow:latest-gpu-py3
+
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+ARG socks_proxy
+
+ENV TERM=xterm \
+    http_proxy=${http_proxy}   \
+    https_proxy=${https_proxy} \
+    no_proxy=${no_proxy} \
+    socks_proxy=${socks_proxy}
+
 RUN apt-get update && yes | apt-get upgrade -y
 RUN apt-get update && apt-get install -y \
     git \
@@ -11,15 +23,15 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --proxy http://10.128.0.100:8080 --upgrade pip
-RUN pip install --proxy http://10.128.0.100:8080 --user \
+RUN pip install --upgrade pip
+RUN pip install --user \
     Cython \
     contextlib2 \
     jupyter \
     matplotlib \
     pillow \
     lxml
-RUN pip3 install --proxy http://10.128.0.100:8080 --user \
+RUN pip3 install --user \
     Cython \
     contextlib2 \
     jupyter \
@@ -27,8 +39,6 @@ RUN pip3 install --proxy http://10.128.0.100:8080 --user \
     pillow \
     lxml \
     Keras
-
-RUN git config --global http.proxy http://10.128.0.100:8080
 
 # Install models/recearch
 WORKDIR  /home/tensorflow/
@@ -43,14 +53,7 @@ RUN make
 RUN cp -r pycocotools /home/tensorflow/models/research/
 WORKDIR  /home/tensorflow/models/research/
 
-RUN apt-get update && apt-get install -y wget
-
-RUN echo "https_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
-    && echo "http_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
-    && echo "ftp_proxy = http://10.128.0.100:8080/" >> /etc/wgetrc \
-    && echo "use_proxy = on" >> /etc/wgetrc
-
-RUN wget -O protobuf.zip https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip
+RUN curl https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip -o protobuf.zip
 RUN unzip protobuf.zip
 RUN ./bin/protoc object_detection/protos/*.proto --python_out=.
 
