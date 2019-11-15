@@ -27,22 +27,22 @@ RUN pip install --upgrade pip
 RUN pip install --user \
     Cython \
     contextlib2 \
-    jupyter \
     matplotlib \
     pillow \
     lxml
 RUN pip3 install --user \
     Cython \
     contextlib2 \
-    jupyter \
     matplotlib \
     pillow \
     lxml \
     Keras
 
+RUN pip3 install jupyter
+
 # Install models/recearch
 WORKDIR  /home/tensorflow/
-RUN git clone https://github.com/Sinitca-Aleksandr/models.git
+RUN git clone https://github.com/tensorflow/models.git
 
 RUN ln -sf python3 /usr/bin/python
 # Install cocoapi
@@ -53,7 +53,7 @@ RUN make
 RUN cp -r pycocotools /home/tensorflow/models/research/
 WORKDIR  /home/tensorflow/models/research/
 
-RUN curl https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip -o protobuf.zip
+RUN curl https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip -L -o protobuf.zip
 RUN unzip protobuf.zip
 RUN ./bin/protoc object_detection/protos/*.proto --python_out=.
 
